@@ -6,7 +6,7 @@ import { connectDB } from "./lib/db.js";
 import { serve } from "inngest/express";
 import cors from "cors";
 import { inngest, functions } from "./lib/inngest.js";
-import clerkWebhook from "./routes/clerkWebhook.js";
+import clerkWebhook from "./lib/clerkWebhook.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
