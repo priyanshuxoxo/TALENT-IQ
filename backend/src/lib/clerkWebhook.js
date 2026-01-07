@@ -1,8 +1,9 @@
 import express from "express";
 import { Webhook } from "svix";
 import User from "../models/User.js";
-import { connectDB } from "../lib/db.js";
-import { ENV } from "../lib/env.js";
+import { connectDB } from "./db.js";
+import { ENV } from "./env.js";
+import { deleteStreamUser, upsertStreamUser } from "./stream.js";
 
 const router = express.Router();
 
@@ -48,11 +49,17 @@ router.post(
         },
         { upsert: true, new: true }
       );
+      await upsertStreamUser({
+        id: id, // ✅ Clerk user id
+        name: `${first_name || ""} ${last_name || ""}`,
+        image: image_url,
+      });
     }
 
     if (event.type === "user.deleted") {
       console.log("🗑️ Deleting user from DB");
       await User.deleteOne({ clerkId: event.data.id });
+      await deleteStreamUser(event.data.id);
     }
 
     res.status(200).json({ success: true });
