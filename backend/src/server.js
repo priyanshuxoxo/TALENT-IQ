@@ -11,9 +11,13 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 //middleware
-app.use("/api/inngest", serve({ client: inngest, functions }));
-app.use(express.json());
+app.use(
+  "/api/inngest",
+  serve({ client: inngest, functions, signingKey: ENV.INNGEST_SIGNING_KEY })
+);
+
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+app.use(express.json());
 
 app.get("/health", (req, res) => {
   res.status(200).json({ message: "Server is running" });
