@@ -5,8 +5,11 @@ import { fileURLToPath } from "url";
 import { connectDB } from "./lib/db.js";
 import { serve } from "inngest/express";
 import cors from "cors";
+import chatRoutes from "./routes/chatRoutes.js";
 import { inngest, functions } from "./lib/inngest.js";
+import { clerkMiddleware } from "@clerk/express";
 import clerkWebhook from "./lib/clerkWebhook.js";
+import { protectRoute } from "./middleware/protectRoute.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -16,14 +19,12 @@ const __dirname = path.dirname(__filename);
 app.use("/api/webhooks", clerkWebhook);
 app.use(express.json());
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+app.use(clerkMiddleware());
 
 app.get("/health", (req, res) => {
   res.status(200).json({ message: "Server is running" });
 });
-app.get("/books", (req, res) => {
-  res.status(200).json({ message: "this is the books endpoint" });
-});
-
+app.use("/api/chat", chatRoutes);
 // if (ENV.NODE_ENV === "production") {
 //   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 //   app.get(/.*/, (req, res) => {
