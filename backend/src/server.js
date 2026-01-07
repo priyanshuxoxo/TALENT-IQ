@@ -4,6 +4,7 @@ import { ENV } from "./lib/env.js";
 import { fileURLToPath } from "url";
 import { connectDB } from "./lib/db.js";
 import { serve } from "inngest/express";
+import { inngest, functions } from "./lib/inngest.js";
 import cors from "cors";
 
 const app = express();
@@ -11,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 //middleware
 app.use(express.json());
-app.use(cors({ origin: ENV.CLIENT_URL, Credential: true }));
+app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.get("/health", (req, res) => {

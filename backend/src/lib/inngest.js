@@ -22,7 +22,7 @@ const syncUser = inngest.createFunction(
       profileImage: image_url,
     };
     await User.create(newUser);
-    //todo:somehting else
+    //todo:something else
   }
 );
 
