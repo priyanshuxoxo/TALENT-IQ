@@ -23,12 +23,12 @@ app.get("/books", (req, res) => {
   res.status(200).json({ message: "this is the books endpoint" });
 });
 
-if (ENV.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-  app.get(/.*/, (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../../frontend/dist/index.html"));
-  });
-}
+// if (ENV.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../frontend/dist")));
+//   app.get(/.*/, (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "../../frontend/dist/index.html"));
+//   });
+// }
 
 const startServer = async () => {
   try {
