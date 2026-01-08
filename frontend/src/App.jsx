@@ -11,13 +11,22 @@ import { Navigate, Route, Routes } from "react-router";
 import HomePage from "./pages/HomePage";
 
 import ProblemsPage from "./pages/ProblemsPage";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
-  const { isSignedIn } = useUser();
+  const { isSignedIn, isLoaded } = useUser();
+  if (!isLoaded) return null;
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={!isSignedIn ? <HomePage /> : <Navigate to={"/dashboard"} />}
+        />
+        <Route
+          path="/dashboard"
+          element={isSignedIn ? <DashboardPage /> : <Navigate to={"/"} />}
+        />
 
         <Route
           path="/problems"
@@ -30,5 +39,3 @@ function App() {
 }
 
 export default App;
-
-//todo:tw,daisyui,reaxct routyer,react hot toast,react-query aka tansack query,axios
