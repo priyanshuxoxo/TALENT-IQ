@@ -18,7 +18,8 @@ export async function createSession(req, res) {
     const session = await Session.create({
       problem,
       difficulty,
-      host: { userId, clerkId },
+      host: userId,
+      callId,
     });
     // create stream video call
     await streamClient.video.call("default", callId).getOrCreate({
