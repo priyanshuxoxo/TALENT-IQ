@@ -28,7 +28,6 @@ const sessionSchema = new mongoose.Schema(
     callId: {
       type: String,
       required: true,
-      default: "",
     },
   },
   {
