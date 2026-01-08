@@ -8,6 +8,7 @@ import cors from "cors";
 import chatRoutes from "./routes/chatRoutes.js";
 import { inngest, functions } from "./lib/inngest.js";
 import { clerkMiddleware } from "@clerk/express";
+import sessionRoutes from "./routes/sessionRoute.js";
 import clerkWebhook from "./lib/clerkWebhook.js";
 import { protectRoute } from "./middleware/protectRoute.js";
 
@@ -25,6 +26,7 @@ app.get("/health", (req, res) => {
   res.status(200).json({ message: "Server is running" });
 });
 app.use("/api/chat", chatRoutes);
+app.use("/api/sessions", sessionRoutes);
 // if (ENV.NODE_ENV === "production") {
 //   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 //   app.get(/.*/, (req, res) => {
