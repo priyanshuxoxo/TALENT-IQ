@@ -28,7 +28,6 @@ function App() {
           path="/dashboard"
           element={isSignedIn ? <DashboardPage /> : <Navigate to={"/"} />}
         />
-
         <Route
           path="/problems"
           element={isSignedIn ? <ProblemsPage /> : <Navigate to={"/"} />}
