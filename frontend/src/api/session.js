@@ -13,15 +13,15 @@ export const sessionApi = {
     return response.data;
   },
   getSessionById: async (id) => {
-    const response = await axiosInstance.get(`/sessions/active${id}`);
+    const response = await axiosInstance.get(`/sessions/${id}`);
     return response.data;
   },
   joinSession: async (id) => {
-    const response = await axiosInstance.post(`/sessions/active${id}/join`);
+    const response = await axiosInstance.post(`/sessions/${id}/join`);
     return response.data;
   },
   endSession: async (id) => {
-    const response = await axiosInstance.post(`/sessions/active${id}/end`);
+    const response = await axiosInstance.get(`/sessions/${id}/end`);
     return response.data;
   },
   getStreamToken: async () => {

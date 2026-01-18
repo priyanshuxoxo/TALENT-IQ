@@ -39,10 +39,10 @@ export const useSessionById = (id) => {
   return result;
 };
 
-export const useJoinSession = (id) => {
-  const result = useMutation({
+export const useJoinSession = () => {
+  return useMutation({
     mutationKey: ["joinSession"],
-    mutationFn: () => sessionApi.joinSession(id),
+    mutationFn: (id) => sessionApi.joinSession(id),
     onSuccess: () => {
       toast.success("Joined session successfully");
     },
@@ -50,12 +50,11 @@ export const useJoinSession = (id) => {
       toast.error(error?.response?.data?.message || "Failed to join session");
     },
   });
-  return result;
 };
-export const useEndSession = (id) => {
-  const result = useMutation({
+export const useEndSession = () => {
+  return useMutation({
     mutationKey: ["endSession"],
-    mutationFn: () => sessionApi.endSession(id),
+    mutationFn: (id) => sessionApi.endSession(id),
     onSuccess: () => {
       toast.success("Ended session successfully");
     },
@@ -63,5 +62,4 @@ export const useEndSession = (id) => {
       toast.error(error?.response?.data?.message || "Failed to end session");
     },
   });
-  return result;
 };
