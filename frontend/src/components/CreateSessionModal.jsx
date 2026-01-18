@@ -1,16 +1,18 @@
 import { Code2Icon, LoaderIcon, PlusIcon } from "lucide-react";
 import { PROBLEMS } from "../data/problems";
+
 function CreateSessionModal({
+  isOpen,
   onClose,
   roomConfig,
   setRoomConfig,
   onCreateRoom,
   isCreating,
-  isOpen,
 }) {
   const problems = Object.values(PROBLEMS);
 
   if (!isOpen) return null;
+
   return (
     <div className="modal modal-open">
       <div className="modal-box max-w-2xl">
@@ -29,7 +31,7 @@ function CreateSessionModal({
               value={roomConfig.problem}
               onChange={(e) => {
                 const selectedProblem = problems.find(
-                  (p) => p.title === e.target.value
+                  (p) => p.title === e.target.value,
                 );
                 setRoomConfig({
                   difficulty: selectedProblem.difficulty,
@@ -92,5 +94,4 @@ function CreateSessionModal({
     </div>
   );
 }
-
 export default CreateSessionModal;

@@ -1,6 +1,6 @@
+import { useUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useUser } from "@clerk/clerk-react";
 import {
   useEndSession,
   useJoinSession,
@@ -14,10 +14,12 @@ import { getDifficultyBadgeClass } from "../lib/utils";
 import { Loader2Icon, LogOutIcon, PhoneOffIcon } from "lucide-react";
 import CodeEditorPanel from "../components/CodeEditorPanel";
 import OutputPanel from "../components/OutputPanel";
-import useStreamClient from "../hooks/useStreamClient.js";
+
+import useStreamClient from "../hooks/useStreamClient";
 import { StreamCall, StreamVideo } from "@stream-io/video-react-sdk";
-import VideoCallUI from "../components/VideoCallUI.jsx";
-const SessionPage = () => {
+import VideoCallUI from "../components/VideoCallUI";
+
+function SessionPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useUser();
@@ -29,8 +31,10 @@ const SessionPage = () => {
     isLoading: loadingSession,
     refetch,
   } = useSessionById(id);
+
   const joinSessionMutation = useJoinSession();
   const endSessionMutation = useEndSession();
+
   const session = sessionData?.session;
   const isHost = session?.host?.clerkId === user?.id;
   const isParticipant = session?.participant?.clerkId === user?.id;
@@ -38,23 +42,30 @@ const SessionPage = () => {
   const { call, channel, chatClient, isInitializingCall, streamClient } =
     useStreamClient(session, loadingSession, isHost, isParticipant);
 
+  // find the problem data based on session problem title
   const problemData = session?.problem
     ? Object.values(PROBLEMS).find((p) => p.title === session.problem)
     : null;
+
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
   const [code, setCode] = useState(
     problemData?.starterCode?.[selectedLanguage] || "",
   );
-  //auto join session if user is not a participant and not the host
+
+  // auto-join session if user is not already a participant and not the host
   useEffect(() => {
     if (!session || !user || loadingSession) return;
     if (isHost || isParticipant) return;
+
     joinSessionMutation.mutate(id, { onSuccess: refetch });
+
+    // remove the joinSessionMutation, refetch from dependencies to avoid infinite loop
   }, [session, user, loadingSession, isHost, isParticipant, id]);
 
-  //redirect the particpant when session end
+  // redirect the "participant" when session ends
   useEffect(() => {
     if (!session || loadingSession) return;
+
     if (session.status === "completed") navigate("/dashboard");
   }, [session, loadingSession, navigate]);
 
@@ -64,6 +75,7 @@ const SessionPage = () => {
       setCode(problemData.starterCode[selectedLanguage]);
     }
   }, [problemData, selectedLanguage]);
+
   const handleLanguageChange = (e) => {
     const newLang = e.target.value;
     setSelectedLanguage(newLang);
@@ -72,6 +84,7 @@ const SessionPage = () => {
     setCode(starterCode);
     setOutput(null);
   };
+
   const handleRunCode = async () => {
     setIsRunning(true);
     setOutput(null);
@@ -80,6 +93,7 @@ const SessionPage = () => {
     setOutput(result);
     setIsRunning(false);
   };
+
   const handleEndSession = () => {
     if (
       confirm(
@@ -196,13 +210,13 @@ const SessionPage = () => {
                                 </div>
                                 <div className="bg-base-200 rounded-lg p-4 font-mono text-sm space-y-1.5">
                                   <div className="flex gap-2">
-                                    <span className="text-primary font-bold min-w-17.5">
+                                    <span className="text-primary font-bold min-w-[70px]">
                                       Input:
                                     </span>
                                     <span>{example.input}</span>
                                   </div>
                                   <div className="flex gap-2">
-                                    <span className="text-secondary font-bold min-w-17.5">
+                                    <span className="text-secondary font-bold min-w-[70px]">
                                       Output:
                                     </span>
                                     <span>{example.output}</span>
@@ -311,6 +325,6 @@ const SessionPage = () => {
       </div>
     </div>
   );
-};
+}
 
 export default SessionPage;
