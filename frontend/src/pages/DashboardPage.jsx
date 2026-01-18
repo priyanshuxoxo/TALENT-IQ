@@ -13,6 +13,7 @@ import StatsCards from "../components/StatsCards";
 import ActiveSessions from "../components/ActiveSessions";
 import RecentSessions from "../components/RecentSessions";
 import CreateSessionModal from "../components/CreateSessionModal";
+import toast from "react-hot-toast";
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -37,8 +38,17 @@ function DashboardPage() {
       },
       {
         onSuccess: (data) => {
+          console.log("Response:", data);
+
+          const sessionId = data?.session?._id || data?.data?._id || data?._id;
+
+          if (!sessionId) {
+            toast.error("Authentication issue. Please refresh and try again.");
+            return;
+          }
+
           setShowCreateModal(false);
-          navigate(`/session/${data.session._id}`);
+          navigate(`/session/${sessionId}`);
         },
       },
     );
