@@ -21,9 +21,9 @@ app.use("/api/webhooks", clerkWebhook);
 app.use(express.json());
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use(clerkMiddleware());
-app.get("/", (req, res) => {
-  res.send("TalentIQ Backend Running 🚀");
-});
+// app.get("/", (req, res) => {
+//   res.send("TalentIQ Backend Running 🚀");
+// });
 
 app.get("/health", (req, res) => {
   res.status(200).json({ message: "Server is running" });
