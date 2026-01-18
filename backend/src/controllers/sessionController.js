@@ -39,10 +39,7 @@ export async function createSession(req, res) {
       members: [clerkId],
     });
     await channel.create();
-    res.status(201).json({
-      ...session.toObject(),
-      callId,
-    });
+    res.status(201).json({ session });
   } catch (error) {
     console.log("Error creating session:", error.message);
     res.status(500).json({ message: "Server error" });
