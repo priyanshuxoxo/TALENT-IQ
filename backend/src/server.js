@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 // app.use("/api/inngest", serve({ client: inngest, functions }));
 app.use("/api/webhooks", clerkWebhook);
 app.use(express.json());
-app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+app.use(cors({ origin: ENV.CLIENT_URL }));
 app.use(clerkMiddleware());
 
 app.get("/health", (req, res) => {
